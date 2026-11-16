@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE LAST MAGIC — 20.11</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+:root{
+ --gold:#ffe7a6;--pink:#ffb8d2;--purple:#c7b2ff;
+ --glass:#ffffff13;--border:#ffffff38;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;overflow:hidden;color:#fff;
+ font-family:'Be Vietnam Pro',sans-serif;
+ background:#101a35;
+}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid white;outline-offset:4px}
+#world{
+ position:relative;width:100vw;height:100dvh;min-height:560px;
+ overflow:hidden;isolation:isolate;
+ background:linear-gradient(180deg,#151d3d,#35466b 58%,#315b59);
+ transition:background 1s;
+}
+#world:before{
+ content:"";position:absolute;inset:-30%;z-index:-2;
+ background:
+ radial-gradient(ellipse at 50% 40%,#8d7bbf45,transparent 40%),
+ radial-gradient(ellipse at 15% 20%,#f5a9d833,transparent 25%),
+ radial-gradient(ellipse at 85% 25%,#a2e3dc33,transparent 25%);
+ animation:sky 15s ease-in-out infinite alternate;
+}
+@keyframes sky{to{transform:translate(3%,-2%) scale(1.1)}}
+.stars{
+ position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background-image:
+ radial-gradient(white 1px,transparent 1.5px),
+ radial-gradient(#ffe8b4 1px,transparent 1.5px);
+ background-size:75px 75px,127px 127px;
+ background-position:0 0,30px 40px;
+ animation:stars 50s linear infinite;
+ opacity:.65;
+}
+@keyframes stars{to{background-position:500px 700px,-400px 600px}}
+#particles{position:fixed;inset:0;z-index:90;pointer-events:none;overflow:hidden}
+.particle{
+ position:absolute;width:5px;height:5px;border-radius:50%;
+ background:#fff0ae;box-shadow:0 0 12px 4px #ffe9a5;
+ animation:particle .8s ease-out forwards;
+}
+@keyframes particle{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+#top{
+ position:absolute;top:17px;left:22px;right:22px;z-index:30;
+ display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-family:'Playfair Display',serif;font-style:italic;color:#ffe9c0;font-size:17px}
+.top-actions{display:flex;gap:9px}
+.icon-btn{
+ border:1px solid var(--border);background:#ffffff14;color:white;
+ width:42px;height:42px;border-radius:50%;backdrop-filter:blur(10px);
+}
+#progress{
+ position:absolute;bottom:0;left:0;width:100%;height:4px;
+ background:#ffffff20;z-index:30;
+}
+#progress>div{height:100%;width:0;background:linear-gradient(90deg,#ffb8d2,#ffe7a6,#c7b2ff);transition:width .6s}
+.scene{
+ display:none;position:absolute;inset:0;overflow-y:auto;
+ align-items:center;justify-content:center;
+ padding:75px 18px 45px;
+ animation:appear .7s ease both;
+}
+.scene.active{display:flex}
+@keyframes appear{from{opacity:0;transform:scale(1.025)}to{opacity:1;transform:scale(1)}}
+h1,h2{font-family:'Playfair Display',serif;font-weight:700}
+h1{font-size:clamp(42px,8vw,82px);line-height:1.05;margin:16px 0}
+h2{font-size:clamp(30px,5vw,48px);margin:12px 0}
+p{color:#eee5f2;line-height:1.8}
+.eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);font-weight:700;text-transform:uppercase}
+.gradient{
+ background:linear-gradient(100deg,#fff4c9,#ffc0d8 50%,#c9baff);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.glass{
+ background:linear-gradient(140deg,#ffffff1e,#ffffff09);
+ border:1px solid var(--border);border-radius:26px;
+ backdrop-filter:blur(17px);
+ box-shadow:0 25px 80px #060b2044,inset 0 1px #ffffff24;
+}
+.panel{width:min(680px,100%);padding:clamp(24px,5vw,46px);text-align:center}
+.btn{
+ padding:14px 25px;border:0;border-radius:50px;
+ background:linear-gradient(110deg,#ffe8ae,#ffb9d4 55%,#c7baff);
+ color:#382c50;font-weight:800;
+ box-shadow:0 8px 28px #ffb9d444;
+ transition:.25s;
+}
+.btn:hover{transform:translateY(-4px);box-shadow:0 13px 35px #ffb9d477}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.ghost{background:#ffffff15;color:white;border:1px solid #ffffff45;box-shadow:none}
+.muted{font-size:12px;color:#d2c9e5}
+.hidden{display:none!important}
+
+/* INTRO */
+.intro-content{width:min(900px,100%);text-align:center;position:relative}
+.portal-wrap{
+ width:230px;height:260px;margin:0 auto 20px;
+ display:grid;place-items:center;perspective:900px;
+}
+.portal{
+ width:185px;height:235px;position:relative;
+ border:5px solid #e9c6c3;border-radius:100px 100px 15px 15px;
+ background:radial-gradient(ellipse,#ffe7bb 0%,#c88fc4 18%,#594d8a 60%,#1d294a 100%);
+ box-shadow:0 0 35px #e8b9ed88,0 0 100px #bc98ff55,inset 0 0 30px #ffe8be88;
+ animation:portalFloat 4s ease-in-out infinite;
+}
+.portal:before{
+ content:"✦";position:absolute;inset:0;display:grid;place-items:center;
+ font-size:75px;color:#fff0bf;text-shadow:0 0 30px #fff;
+ animation:spin 16s linear infinite;
+}
+.portal:after{
+ content:"";position:absolute;inset:12px;border:1px solid #fff7d8;
+ border-radius:100px 100px 10px 10px;
+}
+@keyframes portalFloat{50%{transform:translateY(-12px) rotateY(8deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.intro-content .btn{margin-top:15px}
+.moon{
+ position:absolute;right:12%;top:15%;font-size:65px;
+ filter:drop-shadow(0 0 30px #fff0ae);
+ cursor:pointer;user-select:none;
+ animation:moonFloat 5s ease-in-out infinite;
+}
+@keyframes moonFloat{50%{transform:translateY(-12px)}}
+
+/* MAP */
+.map-scene{width:min(1000px,100%);text-align:center}
+.map{
+ position:relative;width:min(850px,100%);height:390px;margin:20px auto 0;
+}
+.island{
+ position:absolute;width:190px;height:140px;
+ border:1px solid #ffffff5c;border-radius:50%;
+ background:linear-gradient(145deg,#91d7c6,#467d79 70%);
+ box-shadow:inset -15px -20px 25px #183e5055,0 20px 35px #080e2c66;
+ cursor:pointer;transition:.3s;
+ transform-style:preserve-3d;
+}
+.island:before{
+ content:"";position:absolute;left:20%;right:20%;bottom:-35px;height:60px;
+ background:linear-gradient(135deg,#675a91,#343b68);
+ clip-path:polygon(0 0,100% 0,70% 100%,40% 75%,20% 100%);
+}
+.island:hover{transform:translateY(-12px) scale(1.06)}
+.island.locked{filter:grayscale(.6);opacity:.55;cursor:not-allowed}
+.island.done{box-shadow:0 0 35px #ffe8a988,inset -15px -20px 25px #183e5055}
+.island .island-icon{font-size:40px;position:absolute;top:20px;left:0;right:0}
+.island .island-name{position:absolute;top:75px;left:0;right:0;font-weight:800;font-size:13px}
+.island .island-status{position:absolute;top:100px;left:0;right:0;font-size:10px;color:#fff1c9}
+.i1{left:4%;top:30px}
+.i2{left:40%;top:175px}
+.i3{right:3%;top:25px}
+.map-cloud{
+ position:absolute;font-size:45px;opacity:.45;
+ animation:cloud 8s ease-in-out infinite alternate;
+}
+@keyframes cloud{to{transform:translate(25px,-10px)}}
+
+/* GAME BOX */
+.gamebox{
+ width:min(650px,100%);padding:clamp(22px,4vw,36px);
+ text-align:center;
+}
+.counter{font-size:12px;color:var(--gold);letter-spacing:2px;font-weight:800}
+.firefly-area{
+ width:100%;height:260px;position:relative;margin:20px auto;
+ border-radius:20px;overflow:hidden;
+ border:1px solid #ffffff25;
+ background:
+ radial-gradient(ellipse at 50% 100%,#4e8669,#233e4c 70%),
+ linear-gradient(#283c5b,#335a56);
+}
+.firefly-area:before{
+ content:"🌳";position:absolute;bottom:5px;left:4%;font-size:110px;opacity:.8;
+}
+.firefly-area:after{
+ content:"🌲";position:absolute;bottom:5px;right:3%;font-size:120px;opacity:.8;
+}
+.bug{
+ position:absolute;z-index:3;border:0;background:none;
+ color:#fff4a9;font-size:25px;
+ filter:drop-shadow(0 0 12px #fff1a0);
+ animation:bug 2s ease-in-out infinite alternate;
+}
+@keyframes bug{to{transform:translate(8px,-12px) scale(1.2)}}
+.bug.caught{animation:vanish .3s forwards;pointer-events:none}
+@keyframes vanish{to{transform:scale(2);opacity:0}}
+/* MEMORY */
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(390px,100%);margin:24px auto}
+.memory-card{
+ aspect-ratio:1;border:1px solid #ffffff5a;border-radius:15px;
+ background:linear-gradient(145deg,#b59bdb,#5d568e);
+ color:white;font-size:30px;transition:.25s;
+ box-shadow:inset 0 0 18px #ffffff20,0 7px 14px #0003;
+}
+.memory-card:hover{transform:translateY(-4px)}
+.memory-card.open{background:linear-gradient(145deg,#ffe4ad,#dc9cbb);color:#59466d}
+.memory-card.matched{background:linear-gradient(145deg,#92d6ac,#467d76);opacity:.75}
+/* RIDDLE */
+.riddle-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px auto;max-width:430px}
+.answer{
+ padding:16px 12px;border-radius:15px;border:1px solid #ffffff4a;
+ background:#ffffff12;color:white;font-weight:700;transition:.2s;
+}
+.answer:hover{background:#ffffff2c;transform:translateY(-3px)}
+.answer.correct{background:#80c9a3;color:#183d39}
+.answer.wrong{background:#c66b91;color:white}
+.rune{font-size:70px;margin:12px;filter:drop-shadow(0 0 18px #ffe5a4)}
+
+/* FINAL */
+.final-content{width:min(780px,100%);text-align:center}
+.chest{
+ width:180px;height:135px;margin:25px auto 18px;position:relative;
+ cursor:pointer;perspective:700px;
+}
+.chest-base{
+ position:absolute;bottom:0;width:180px;height:90px;
+ border:4px solid #e7bd8c;border-radius:10px 10px 20px 20px;
+ background:linear-gradient(90deg,#7c466b,#d28a9d,#75466c);
+ box-shadow:0 18px 30px #0005;
+}
+.chest-lid{
+ position:absolute;top:0;width:180px;height:65px;
+ border:4px solid #f3d3a0;border-radius:80px 80px 8px 8px;
+ background:linear-gradient(90deg,#9a5c80,#edb0a5,#895174);
+ transform-origin:top;transition:1s;z-index:2;
+}
+.chest.open .chest-lid{transform:rotateX(125deg) translateY(-10px)}
+.chest-lock{
+ position:absolute;z-index:3;top:52px;left:74px;width:32px;height:38px;
+ border-radius:7px;background:#ffe8a6;border:3px solid #a87858;
+}
+.chest.open .chest-lock{opacity:0}
+.bouquet{
+ position:absolute;z-index:4;left:50%;top:50%;
+ transform:translate(-50%,-20%) scale(0);
+ font-size:55px;white-space:nowrap;opacity:0;
+ transition:1s .4s;
+ filter:drop-shadow(0 0 15px #ffe9a7);
+}
+.chest.open .bouquet{transform:translate(-50%,-120%) scale(1);opacity:1}
+.letter{
+ width:min(610px,100%);margin:25px auto 0;padding:30px;
+ text-align:left;color:#59475a;
+ background:linear-gradient(140deg,#fff9e8,#ffe9e8);
+ border-radius:5px 5px 22px 22px;
+ box-shadow:0 20px 65px #0005;
+ transform:translateY(35px);opacity:0;
+ transition:1s;
+}
+.letter.show{transform:translateY(0);opacity:1}
+.letter h2{text-align:center;color:#a65e83}
+.letter p{color:#705a6b;font-size:14px;line-height:2}
+.letter .sign{text-align:right;color:#a65e83;font-family:'Playfair Display',serif;font-size:20px;font-style:italic}
+.toast{
+ position:fixed;bottom:30px;left:50%;transform:translate(-50%,20px);
+ z-index:100;padding:12px 20px;border-radius:30px;
+ color:#554363;background:#fff0d5;font-size:13px;font-weight:800;
+ opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;
+ box-shadow:0 10px 30px #0004;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#secret{
+ position:fixed;inset:0;z-index:80;display:none;place-items:center;
+ background:#11182bdc;backdrop-filter:blur(10px);padding:20px;
+}
+#secret.show{display:grid}
+.secret-card{width:min(400px,100%);padding:30px;text-align:center}
+@media(max-width:650px){
+ #world{min-height:540px}
+ .scene{padding:70px 13px 38px}
+ .moon{right:8%;top:12%;font-size:45px}
+ .map{height:470px}
+ .island{width:145px;height:115px}
+ .island:before{bottom:-28px;height:48px}
+ .i1{left:0;top:20px}
+ .i2{left:calc(50% - 72px);top:190px}
+ .i3{right:0;top:25px}
+ .island .island-icon{font-size:32px;top:14px}
+ .island .island-name{top:60px;font-size:11px}
+ .island .island-status{top:83px;font-size:9px}
+ .memory-grid{gap:7px}
+ .memory-card{font-size:25px}
+ .letter{padding:22px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="world">
+ <div class="stars"></div>
+ <div id="particles"></div>
+
+ <header id="top">
+  <div class="logo">✧ The Last Magic</div>
+  <div class="top-actions">
+   <button class="icon-btn" id="musicBtn" title="Bật/tắt nhạc">♫</button>
+   <button class="icon-btn" id="helpBtn" title="Hướng dẫn">?</button>
+  </div>
+ </header>
+ <div id="progress"><div id="progressBar"></div></div>
+
+ <!-- INTRO -->
+ <section class="scene active" id="intro">
+  <div class="moon" id="moon">☾</div>
+  <div class="intro-content">
+   <div class="portal-wrap"><div class="portal"></div></div>
+   <div class="eyebrow">A magical journey · 20.11</div>
+   <h1 class="gradient">THE LAST<br>MAGIC</h1>
+   <p>Một khu vườn đang dần biến mất.<br>Chỉ có phép màu của lòng biết ơn mới có thể cứu nó.</p>
+   <button class="btn" id="startBtn">BẮT ĐẦU CUỘC PHIÊU LƯU ✦</button>
+   <p class="muted" style="margin-top:18px">Một món quà bí mật đang chờ ở cuối hành trình...</p>
+  </div>
+ </section>
+
+ <!-- MAP -->
+ <section class="scene" id="mapScene">
+  <div class="map-scene">
+   <div class="eyebrow">The magical world</div>
+   <h2 class="gradient">Ba vùng đất phép thuật</h2>
+   <p>Hãy khám phá từng hòn đảo và thu thập ba mảnh phép màu.</p>
+   <div class="map">
+    <div class="map-cloud" style="left:30%;top:30%">☁️</div>
+    <div class="map-cloud" style="right:20%;bottom:10%;animation-delay:2s">☁️</div>
+    <button class="island i1" id="island1">
+     <span class="island-icon">🪲</span>
+     <span class="island-name">RỪNG ĐOM ĐÓM</span>
+     <span class="island-status" id="status1">BẮT ĐẦU</span>
+    </button>
+    <button class="island i2 locked" id="island2">
+     <span class="island-icon">🌸</span>
+     <span class="island-name">THUNG LŨNG HOA</span>
+     <span class="island-status" id="status2">🔒 BỊ KHÓA</span>
+    </button>
+    <button class="island i3 locked" id="island3">
+     <span class="island-icon">🔮</span>
+     <span class="island-name">ĐỀN PHA LÊ</span>
+     <span class="island-status" id="status3">🔒 BỊ KHÓA</span>
+    </button>
+   </div>
+   <div class="counter" id="mapCount">PHÉP MÀU: 0 / 3</div>
+  </div>
+ </section>
+
+ <!-- GAME 1 -->
+ <section class="scene" id="game1">
+  <div class="gamebox glass">
+   <div class="eyebrow">Quest 01 · The lost lights</div>
+   <h2 class="gradient">Giải cứu đom đóm</h2>
+   <p>Ánh sáng trong khu rừng đã bị đánh cắp!<br>Chạm vào 5 đom đóm đang ẩn náu để khôi phục phép thuật.</p>
+   <div class="counter" id="bugCount">ĐÃ CỨU: 0 / 5</div>
+   <div class="firefly-area" id="bugArea"></div>
+   <p class="muted">Mẹo: Chúng đang bay quanh khu rừng đó!</p>
+  </div>
+ </section>
+
+ <!-- GAME 2 -->
+ <section class="scene" id="game2">
+  <div class="gamebox glass">
+   <div class="eyebrow">Quest 02 · The forgotten memories</div>
+   <h2 class="gradient">Ký ức bị thất lạc</h2>
+   <p>Những cánh hoa đã quên mất người bạn của mình.<br>Hãy tìm 4 cặp biểu tượng giống nhau!</p>
+   <div class="counter" id="pairCount">ĐÃ GHÉP: 0 / 4 CẶP</div>
+   <div class="memory-grid" id="memoryGrid"></div>
+   <p class="muted">Mỗi cặp được tìm thấy sẽ làm khu vườn rực rỡ hơn.</p>
+  </div>
+ </section>
+
+ <!-- GAME 3 -->
+ <section class="scene" id="game3">
+  <div class="gamebox glass">
+   <div class="eyebrow">Quest 03 · The crystal temple</div>
+   <h2 class="gradient">Mật mã pha lê</h2>
+   <div class="rune">ᚠ ✧ ᚱ</div>
+   <p>Người canh giữ đền thờ để lại câu đố cuối cùng:</p>
+   <h3 style="color:#ffe9b6;line-height:1.7">"Thứ càng trao đi càng lớn lên,<br>thứ không thể mua bằng vàng bạc,<br>thường bắt đầu bằng một tấm lòng."</h3>
+   <p>Đó là gì?</p>
+   <div class="riddle-options">
+    <button class="answer">A. Sự giàu có</button>
+    <button class="answer">B. Lòng biết ơn</button>
+    <button class="answer">C. Quyền lực</button>
+    <button class="answer">D. Thời gian</button>
+   </div>
+   <p class="muted" id="riddleHint">Chọn câu trả lời mà bạn tin là đúng.</p>
+  </div>
+ </section>
+
+ <!-- FINAL -->
+ <section class="scene" id="finalScene">
+  <div class="final-content">
+   <div class="eyebrow">The final secret</div>
+   <h1 class="gradient">Bạn đã tìm thấy<br>phép màu cuối cùng!</h1>
+   <p>Ba mảnh phép màu đã được kết nối.<br>Hãy mở chiếc rương để khám phá bí mật nhé.</p>
+   <div class="chest" id="chest">
+    <div class="chest-lid"></div>
+    <div class="chest-base"></div>
+    <div class="chest-lock"></div>
+    <div class="bouquet">💐🌷🌸</div>
+   </div>
+   <button class="btn" id="openChest">MỞ CHIẾC RƯƠNG BÍ MẬT ✨</button>
+   <article class="letter" id="letter">
+    <h2>Gửi cô thân yêu! 💗</h2>
+    <p>
+     Nhân ngày Nhà giáo Việt Nam 20/11, em muốn gửi đến cô lời cảm ơn chân thành nhất.
+    </p>
+    <p>
+     Cảm ơn cô vì những bài học, sự tận tâm và kiên nhẫn mà cô đã dành cho chúng em. Có những điều cô dạy có thể chúng em chưa nhớ hết ngay lúc này, nhưng sự nhiệt tình và tình yêu nghề của cô chắc chắn sẽ là điều chúng em luôn trân trọng.
+    </p>
+    <p>
+     Em đã tạo nên khu vườn nhỏ này như một món quà đặc biệt. Mỗi thử thách là một chút cố gắng, mỗi ánh sáng là một lời cảm ơn và bó hoa cuối cùng là tất cả tình cảm em muốn gửi đến cô.
+    </p>
+    <p>
+     Chúc cô luôn mạnh khỏe, hạnh phúc, nhiều niềm vui và luôn giữ được nụ cười rạng rỡ. Mong cô sẽ có thật nhiều ngày tháng tuyệt vời bên những thế hệ học trò!
+    </p>
+    <p class="sign">Học trò của cô ♡</p>
+   </article>
+   <p class="muted" id="endingText" style="margin-top:20px">Một khu vườn có thể khép lại, nhưng lòng biết ơn thì luôn ở lại.</p>
+   <button class="btn ghost hidden" id="replayBtn">CHƠI LẠI ↻</button>
+  </div>
+ </section>
+
+ <!-- SECRET -->
+ <div id="secret">
+  <div class="secret-card glass">
+   <div style="font-size:55px">🌙</div>
+   <div class="eyebrow">A hidden message</div>
+   <h2 class="gradient">Bạn tìm thấy bí mật rồi!</h2>
+   <p>Trong khu vườn này, có một điều kỳ diệu hơn tất cả phép thuật...</p>
+   <h3 style="color:#ffe7a6;font-family:'Playfair Display',serif">Đó là những người đã giúp chúng ta trưởng thành. 💗</h3>
+   <button class="btn" id="closeSecret">GIỮ BÍ MẬT NÀY ✨</button>
+  </div>
+ </div>
+ <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+let completed=[false,false,false];
+let bugs=0,pairs=0,first=null,lock=false;
+let moonClicks=0,audio=null,music=false,musicTimer=null;
+
+function toast(msg){
+ const t=$('#toast');t.textContent=msg;t.classList.add('show');
+ clearTimeout(toast.timer);
+ toast.timer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function scene(id){
+ $$('.scene').forEach(s=>s.classList.remove('active'));
+ $('#'+id).classList.add('active');
+ const widths={intro:0,mapScene:8,game1:15,game2:40,game3:68,finalScene:100};
+ $('#progressBar').style.width=(widths[id]||0)+'%';
+}
+function updateMap(){
+ const count=completed.filter(Boolean).length;
+ $('#mapCount').textContent=`PHÉP MÀU: ${count} / 3`;
+ for(let i=0;i<3;i++){
+  const island=$('#island'+(i+1));
+  const status=$('#status'+(i+1));
+  if(completed[i]){
+   island.classList.remove('locked');island.classList.add('done');
+   status.textContent='✦ HOÀN THÀNH';
+  }else if(i===0||completed[i-1]){
+   island.classList.remove('locked');
+   status.textContent='KHÁM PHÁ';
+  }else{
+   island.classList.add('locked');
+   status.textContent='🔒 BỊ KHÓA';
+  }
+ }
+ if(count===3)setTimeout(()=>scene('finalScene'),900);
+}
+function completeQuest(i){
+ completed[i]=true;
+ updateMap();
+ toast('Bạn vừa thu thập được một mảnh phép màu! ✨');
+ setTimeout(()=>scene('mapScene'),850);
+}
+
+/* MAGIC CURSOR */
+document.addEventListener('pointermove',e=>{
+ if(Math.random()>.72)return;
+ const p=document.createElement('i');
+ p.className='particle';
+ p.style.left=e.clientX+'px';p.style.top=e.clientY+'px';
+ p.style.setProperty('--x',(Math.random()*45-22)+'px');
+ p.style.setProperty('--y',(Math.random()*45-22)+'px');
+ $('#particles').appendChild(p);
+ setTimeout(()=>p.remove(),850);
+});
+
+/* PARALLAX */
+document.addEventListener('pointermove',e=>{
+ if(innerWidth<700)return;
+ const x=(e.clientX/innerWidth-.5)*7;
+ const y=(e.clientY/innerHeight-.5)*7;
+ $('#world').style.backgroundPosition=`${50+x}% ${50+y}%`;
+});
+
+/* AUDIO */
+function note(freq,duration=.3){
+ if(!audio||!music)return;
+ const o=audio.createOscillator(),g=audio.createGain();
+ o.type='sine';o.frequency.value=freq;
+ g.gain.setValueAtTime(.025,audio.currentTime);
+ g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+ o.connect(g);g.connect(audio.destination);
+ o.start();o.stop(audio.currentTime+duration);
+}
+function startMusic(){
+ audio=audio||new(window.AudioContext||window.webkitAudioContext)();
+ if(audio.state==='suspended')audio.resume();
+ music=true;$('#musicBtn').textContent='♫';
+ const melody=[523,659,784,659,587,698,880,784];
+ let i=0;clearInterval(musicTimer);
+ musicTimer=setInterval(()=>note(melody[i++%melody.length],.45),500);
+}
+function stopMusic(){
+ music=false;clearInterval(musicTimer);$('#musicBtn').textContent='♪';
+}
+$('#musicBtn').onclick=()=>music?stopMusic():startMusic();
+
+/* START */
+$('#startBtn').onclick=()=>{
+ startMusic();scene('mapScene');
+ toast('Hãy khám phá ba vùng đất phép thuật!');
+};
+
+/* SECRET MOON */
+$('#moon').onclick=()=>{
+ moonClicks++;
+ $('#moon').style.transform='scale(1.25)';
+ setTimeout(()=>$('#moon').style.transform='',200);
+ if(moonClicks===3){
+  $('#secret').classList.add('show');moonClicks=0;
+ }
+};
+$('#closeSecret').onclick=()=>$('#secret').classList.remove('show');
+
+/* HELP */
+$('#helpBtn').onclick=()=>toast('Khám phá từng hòn đảo theo thứ tự. Hoàn thành cả 3 nhiệm vụ để mở kho báu!');
+
+/* ISLAND 1 */
+$('#island1').onclick=()=>{
+ if(completed[0])return toast('Khu rừng này đã được cứu rồi!');
+ scene('game1');buildBugs();
+};
+function buildBugs(){
+ bugs=0;$('#bugCount').textContent='ĐÃ CỨU: 0 / 5';
+ const area=$('#bugArea');area.innerHTML='';
+ const positions=[
+  [13,18],[75,15],[42,60],[85,65],[28,73]
+ ];
+ positions.forEach((pos,i)=>{
+  const b=document.createElement('button');
+  b.className='bug';b.textContent='✦';
+  b.style.left=pos[0]+'%';b.style.top=pos[1]+'%';
+  b.style.animationDelay=(i*.3)+'s';
+  b.onclick=()=>{
+   if(b.classList.contains('caught'))return;
+   b.classList.add('caught');bugs++;
+   $('#bugCount').textContent=`ĐÃ CỨU: ${bugs} / 5`;
+   note(650+bugs*100,.4);
+   toast(['Một ánh sáng đã trở lại!','Đom đóm đang hồi sinh!','Tuyệt lắm!','Sắp đủ rồi!','Khu rừng đã sáng trở lại!'][bugs-1]);
+   if(bugs===5)setTimeout(()=>completeQuest(0),700);
+  };
+  area.appendChild(b);
+ });
+}
+
+/* ISLAND 2 */
+$('#island2').onclick=()=>{
+ if(!completed[0])return toast('Hãy cứu khu rừng đom đóm trước!');
+ if(completed[1])return toast('Thung lũng hoa đã được khôi phục!');
+ scene('game2');buildMemory();
+};
+function buildMemory(){
+ const icons=['🌷','🦋','🌙','🍄','🌷','🦋','🌙','🍄'];
+ for(let i=icons.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [icons[i],icons[j]]=[icons[j],icons[i]];
+ }
+ const grid=$('#memoryGrid');grid.innerHTML='';
+ pairs=0;first=null;lock=false;
+ $('#pairCount').textContent='ĐÃ GHÉP: 0 / 4 CẶP';
+ icons.forEach(icon=>{
+  const b=document.createElement('button');
+  b.className='memory-card';b.textContent='?';b.dataset.icon=icon;
+  b.onclick=()=>flip(b);grid.appendChild(b);
+ });
+}
+function flip(card){
+ if(lock||card.classList.contains('open')||card.classList.contains('matched'))return;
+ card.classList.add('open');card.textContent=card.dataset.icon;
+ note(550,.2);
+ if(!first){first=card;return}
+ if(first.dataset.icon===card.dataset.icon){
+  first.classList.add('matched');card.classList.add('matched');
+  first=null;pairs++;
+  $('#pairCount').textContent=`ĐÃ GHÉP: ${pairs} / 4 CẶP`;
+  if(pairs===4)setTimeout(()=>completeQuest(1),750);
+ }else{
+  lock=true;const old=first;first=null;
+  setTimeout(()=>{
+   old.classList.remove('open');old.textContent='?';
+   card.classList.remove('open');card.textContent='?';
+   lock=false;
+  },850);
+ }
+}
+
+/* ISLAND 3 */
+$('#island3').onclick=()=>{
+ if(!completed[1])return toast('Hãy khôi phục thung lũng hoa trước!');
+ if(completed[2])return toast('Ngôi đền đã được đánh thức!');
+ scene('game3');
+};
+$$('.answer').forEach((b,i)=>{
+ b.onclick=()=>{
+  if(completed[2])return;
+  if(i===1){
+   b.classList.add('correct');
+   $('#riddleHint').textContent='Chính xác! Lòng biết ơn là phép màu lớn nhất. ✨';
+   note(880,.7);
+   $$('.answer').forEach(x=>x.disabled=true);
+   setTimeout(()=>completeQuest(2),1100);
+  }else{
+   b.classList.add('wrong');
+   $('#riddleHint').textContent='Chưa đúng rồi! Hãy nghĩ về điều làm nên ý nghĩa của món quà nhé.';
+   setTimeout(()=>b.classList.remove('wrong'),500);
+  }
+ };
+});
+
+/* FINAL TREASURE */
+$('#openChest').onclick=()=>{
+ if($('#chest').classList.contains('open'))return;
+ $('#chest').classList.add('open');
+ $('#openChest').disabled=true;
+ $('#openChest').textContent='PHÉP MÀU ĐANG NỞ RỘ ✨';
+ setTimeout(()=>{
+  $('#letter').classList.add('show');
+  $('#endingText').textContent='Bó hoa này được tạo nên từ tất cả sự trân trọng và biết ơn dành cho cô. 💗';
+  $('#replayBtn').classList.remove('hidden');
+  celebrate();
+ },1300);
+};
+function celebrate(){
+ const symbols=['🌸','🌷','✨','💗','⭐','🌼','🦋'];
+ for(let i=0;i<75;i++){
+  const el=document.createElement('span');
+  el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  el.style.cssText=`
+   position:fixed;z-index:100;top:-30px;left:${Math.random()*100}vw;
+   font-size:${15+Math.random()*20}px;pointer-events:none;
+   animation:fall ${3+Math.random()*4}s linear ${Math.random()*1.5}s forwards`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),9000);
+ }
+ note(880,1);
+}
+const style=document.createElement('style');
+style.textContent='@keyframes fall{to{transform:translateY(110vh) rotate(700deg);opacity:0}}';
+document.head.appendChild(style);
+
+/* REPLAY */
+$('#replayBtn').onclick=()=>{
+ completed=[false,false,false];
+ $('#chest').classList.remove('open');
+ $('#openChest').disabled=false;
+ $('#openChest').textContent='MỞ CHIẾC RƯƠNG BÍ MẬT ✨';
+ $('#letter').classList.remove('show');
+ $('#replayBtn').classList.add('hidden');
+ $('#endingText').textContent='Một khu vườn đang chờ bạn khám phá lại...';
+ updateMap();scene('intro');
+ toast('Một hành trình mới đang chờ!');
+};
+</script>
+</div>
+</body>
+</html>
